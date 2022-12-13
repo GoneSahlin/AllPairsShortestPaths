@@ -32,10 +32,8 @@ const int stop = 1000;
 const int runs = 1;
 
 // function prototypes
-double timed_cliques(const Graph<int>&);
-double timed_dijkstra(const Graph<int>&);
-double timed_prim(const Graph<int>&);
-double timed_kruskal(const Graph<int>&);
+double timed_johnsons(const Graph<int>&);
+double timed_floyd_warshall(const Graph<int>&);
 
 int main(int argc, char* argv[])
 {
