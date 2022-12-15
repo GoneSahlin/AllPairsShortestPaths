@@ -105,7 +105,17 @@ vector<vector<int>> GraphAlgorithms<T>::johnsons(const Graph<int>& g) {
     }
   }
 
+  // run dijkstras on each node in reweighted path
+  for (int u = 0; u < g.node_count(); u++) {
+    dists.push_back(vector<int>());
 
+    vector<int> dijkstras_dist = dijkstra_shortest_path(reweighted_g, u);
+
+    for (int v = 0; v < g.node_count(); v++) {
+      int real_dist = dijkstras_dist[v] - bellman_ford_dists[u] + bellman_ford_dists[v];
+      dists[u].push_back(real_dist);
+    } 
+  }
 
   return dists;
 }
