@@ -10,10 +10,12 @@
 #define GRAPH_ALGORITHMS_H
 
 #include <vector>
+#include <tuple>
 #include "graph.h"
 #include "adjacency_list.h"
 
 using std::vector;
+using std::pair;
 
 template<typename T>
 class GraphAlgorithms
@@ -61,42 +63,19 @@ class GraphAlgorithms
   //----------------------------------------------------------------------
   static vector<int> bellman_ford_shortest_path(const Graph<int>& g, int s);
 
+  //----------------------------------------------------------------------
+  // Single-source shortest paths from the given source using
+  // Dijkstra's algorithm. Asumes maximum weight is given by 
+  // numeric_limits<int>::max()
+  // Input:
+  //  g -- the given directed weighted graph
+  //  s -- the source vertex
+  // Output: the minimum path cost from src to each vertex v given as
+  //         a vector with indexes as nodes and values as path costs
+  //         from s
+  //----------------------------------------------------------------------
+  static vector<int> dijkstra_shortest_path(const Graph<int>& g, int s);
 };
-
-
-template<typename T>
-vector<int> GraphAlgorithms<T>::bellman_ford_shortest_path(const Graph<int>& g, int s) {
-  vector<int> dists;
-  for (int v = 0; v < g.node_count(); v++) {
-    dists.push_back(std::numeric_limits<int>::max());
-  }
-
-  dists[s] = 0;
-
-  for (int i = 0; i < g.node_count(); i++) {
-    // for each edge
-    for (int u = 0; u < g.node_count(); u++) {
-      vector<int> out_nodes = g.out_nodes(u);
-      for (int v : out_nodes) {
-        if (dists[v] > dists[u] + g.get_label(u, v).value() && dists[u] != std::numeric_limits<int>::max()) {
-          dists[v] = dists[u] + g.get_label(u, v).value();
-        }
-      }
-    }
-  }
-
-  // for each edge
-  for (int u = 0; u < g.node_count(); u++) {
-    auto out_nodes = g.out_nodes(u);
-    for (auto v : out_nodes) {
-      if (dists[v] > dists[u] + g.get_label(u, v).value() && dists[u] != std::numeric_limits<int>::max()) {
-        return vector<int>();
-      }
-    }
-  }
-  
-  return dists;
-}
 
 
 template <typename T>
@@ -179,5 +158,95 @@ vector<vector<int>> GraphAlgorithms<T>::floyd_warshall(const Graph<int>& g) {
 
   return dists;
 }
+
+
+template<typename T>
+vector<int> GraphAlgorithms<T>::bellman_ford_shortest_path(const Graph<int>& g, int s) {
+  vector<int> dists;
+  for (int v = 0; v < g.node_count(); v++) {
+    dists.push_back(std::numeric_limits<int>::max());
+  }
+
+  dists[s] = 0;
+
+  for (int i = 0; i < g.node_count(); i++) {
+    // for each edge
+    for (int u = 0; u < g.node_count(); u++) {
+      vector<int> out_nodes = g.out_nodes(u);
+      for (int v : out_nodes) {
+        if (dists[v] > dists[u] + g.get_label(u, v).value() && dists[u] != std::numeric_limits<int>::max()) {
+          dists[v] = dists[u] + g.get_label(u, v).value();
+        }
+      }
+    }
+  }
+
+  // for each edge
+  for (int u = 0; u < g.node_count(); u++) {
+    auto out_nodes = g.out_nodes(u);
+    for (auto v : out_nodes) {
+      if (dists[v] > dists[u] + g.get_label(u, v).value() && dists[u] != std::numeric_limits<int>::max()) {
+        return vector<int>();
+      }
+    }
+  }
+  
+  return dists;
+}
+
+
+template <typename T>
+vector<int> GraphAlgorithms<T>::dijkstra_shortest_path(const Graph<int>& g, int s) {
+  vector<int> dist;
+
+  if (g.node_count() == 0) {
+    return dist;
+  }
+
+  for (int i = 0; i < g.node_count(); i++) {
+    dist.push_back(std::numeric_limits<int>::max());
+  }
+  bool excluded[g.node_count()] = { false };
+
+  dist[s] = 0;
+  excluded[s] = true;
+
+  // compute E
+  vector<pair<int,int>> edges;
+  for (int i = 0; i < g.node_count(); i++) {
+    vector<int> adj = g.out_nodes(i);
+    for (int j : adj) {
+      edges.push_back(std::pair<int,int>(i,j));
+    }
+  }
+
+  while (true) {
+    int minDist = -1;
+    pair<int,int> minEdge;
+    int minIndex;
+    for (int i = 0; i < edges.size(); i++) {
+      pair<int,int> edge = edges[i];
+      if (excluded[edge.first] && !excluded[edge.second]) {
+        int edgeDist = dist[edge.first] + g.get_label(edge.first, edge.second).value();
+        if (edgeDist < minDist || minDist == -1) {
+          minDist = edgeDist;
+          minEdge = edge;
+          minIndex = i;
+        }
+      }
+    }
+    if (minDist == -1) {
+      break;
+    }
+    excluded[minEdge.second] = true;
+    
+    dist[minEdge.second] = minDist;
+
+    edges.erase(edges.begin() + minIndex);
+  }
+
+  return dist;
+}
+
 
 #endif
