@@ -85,7 +85,7 @@ TEST(BasicJohnsonsTests, ThreeNodeCycleTest) {
   ASSERT_EQ(3, path_costs[0][2]);
   ASSERT_EQ(5, path_costs[1][0]);
   ASSERT_EQ(0, path_costs[1][1]);
-  ASSERT_EQ(3, path_costs[1][2]);
+  ASSERT_EQ(2, path_costs[1][2]);
   ASSERT_EQ(3, path_costs[2][0]);
   ASSERT_EQ(4, path_costs[2][1]);
   ASSERT_EQ(0, path_costs[2][2]);
@@ -222,7 +222,7 @@ TEST(BasicFloydWarshallTests, ThreeNodeCycleTest) {
   ASSERT_EQ(3, path_costs[0][2]);
   ASSERT_EQ(5, path_costs[1][0]);
   ASSERT_EQ(0, path_costs[1][1]);
-  ASSERT_EQ(3, path_costs[1][2]);
+  ASSERT_EQ(2, path_costs[1][2]);
   ASSERT_EQ(3, path_costs[2][0]);
   ASSERT_EQ(4, path_costs[2][1]);
   ASSERT_EQ(0, path_costs[2][2]);

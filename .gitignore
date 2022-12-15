@@ -4,6 +4,9 @@
 
 # assignment executable output files
 
+final_perf
+final_test
+
 hw[0-9]*
 hw[0-9][0-9]*
 
