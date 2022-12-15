@@ -27,8 +27,8 @@ using namespace std::chrono;
 
 // test parameters
 const int start = 0;
-const int step = 100;
-const int stop = 1000;
+const int step = 10;
+const int stop = 120;
 const int runs = 1;
 
 // function prototypes

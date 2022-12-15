@@ -11,11 +11,13 @@
 
 #include <vector>
 #include <tuple>
+#include <set>
 #include "graph.h"
 #include "adjacency_list.h"
 
 using std::vector;
 using std::pair;
+using std::set;
 
 template<typename T>
 class GraphAlgorithms
@@ -112,7 +114,7 @@ vector<vector<int>> GraphAlgorithms<T>::johnsons(const Graph<int>& g) {
     vector<int> dijkstras_dist = dijkstra_shortest_path(reweighted_g, u);
 
     for (int v = 0; v < g.node_count(); v++) {
-      int real_dist = dijkstras_dist[v] - bellman_ford_dists[u] + bellman_ford_dists[v];
+      int real_dist = dijkstras_dist[v] - bellman_ford_dists[u] + bellman_ford_dists[v];  // get real distance without reweighting
       dists[u].push_back(real_dist);
     } 
   }
