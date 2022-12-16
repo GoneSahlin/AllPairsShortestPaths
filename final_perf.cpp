@@ -59,13 +59,13 @@ int main(int argc, char* argv[])
     AdjacencyList<int> sparse_johnsons_graph(n, true);
     AdjacencyList<int> dense_johnsons_graph(n, true); 
     load_sparse(sparse_johnsons_graph);
-    load_dense(dense_johnsons_graph, 0.02); // small to keep overall time down
+    load_dense(dense_johnsons_graph, 0.1); // small to keep overall time down
 
     // floyd warshall graphs
     AdjacencyList<int> sparse_floyd_warshall_graph(n, true);
     AdjacencyList<int> dense_floyd_warshall_graph(n, true); 
     load_sparse(sparse_floyd_warshall_graph);
-    load_dense(dense_floyd_warshall_graph, 0.02); // small to keep overall time down
+    load_dense(dense_floyd_warshall_graph, 0.1); // small to keep overall time down
 
     // sparse results
     cout << timed_johnsons(sparse_johnsons_graph) << " " << flush;

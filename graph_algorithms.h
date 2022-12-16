@@ -11,13 +11,11 @@
 
 #include <vector>
 #include <tuple>
-#include <set>
 #include "graph.h"
 #include "adjacency_list.h"
 
 using std::vector;
 using std::pair;
-using std::set;
 
 template<typename T>
 class GraphAlgorithms
